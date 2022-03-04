@@ -74,7 +74,7 @@ function generator(matLen, gr, grEat, pr, mush, boom, wall) {
 
 let side = 20;
 
-let matrix = generator(12, 40, 40, 15, 8, 12, 10);
+let matrix = generator(30, 100, 150, 15, 8, 12, 10);
 
 let grassArr = []
 let grassEaterArr = []
@@ -144,7 +144,7 @@ function draw() {
                 } else if (matrix[y][x] == 6) {
                     fill('black')
                 } else if (matrix[y][x] == 7) {
-                    fill('silver')
+                    fill('brown')
                 }
                 rect(x * side, y * side, side, side)
             }
