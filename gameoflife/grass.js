@@ -1,9 +1,17 @@
+// var LiveForm = require("./LiveForm");
+// var Grass = require("./Grass.js");
+// var GrassEater = require("./GrassEater.js");
+// var HBomb = require("./AtomicBomb.js");
+// var Gazanik = require("./Gazanik.js");
+// var BombFinder = require("./bombFinder.js");
+// let random = require('./random');
+
 class Grass {
-    constructor(x, y, index) {
-        this.x = x;
-        this.y = y;
-        this.index = index;
+    constructor(x, y) {
+        // super(x, y)
         this.multiply = 0;
+    }
+    getNewCoordinates() {
         this.directions = [
             [this.x - 1, this.y - 1],
             [this.x, this.y - 1],
@@ -14,47 +22,39 @@ class Grass {
             [this.x, this.y + 1],
             [this.x + 1, this.y + 1]
         ];
-
     }
     chooseCell(character) {
-        var found = [];
-        for (var i in this.directions) {
-            var x = this.directions[i][0];
-            var y = this.directions[i][1];
-            if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-                if (matrix[y][x] == character) {
-                    found.push(this.directions[i]);
+        this.getNewCoordinates();
+        return super.chooseCell(character);
+    }
+    mul() {
+        if (this.multiply >= 2) {
+
+            let emptyCells = this.chooseCell(0);
+            let newCell = random(emptyCells);
+
+            if (newCell) {
+
+                let x = newCell[0];
+                let y = newCell[1];
+
+                matrix[x][y] = 1;
+                let grass = new Grass(x, y);
+                if (!this.ifExists(grass)) {
+
+                    grassArr.push(grass);
+                    this.multiply = 0;
                 }
             }
         }
-        return found;
-    }
-
-  
-    mul() {
         this.multiply++;
-        var emptyCells = this.chooseCell(0);
-        var newCell = random(emptyCells);
-    
-        console.log(emptyCells);
-        setTimeout(function(){
-            var newX = newCell[0];
-            var newY = newCell[1];
-            matrix[newY][newX] = 1;
-
-            var newGrass = new Grass(newX, newY, 1);
-            grassArr.push(newGrass);
-            this.multiply = 0;
-        },2000)
-        
     }
-    die() {
-        matrix[this.y][this.x] = 0
-        for (var i in grassArr) {
-            if (this.x == grassArr[i].x && this.y == grassArr[i].y) {
-                grassArr.splice(i, 1);
-                break;
+    ifExists(grass) {
+        for (let j = 0; j < grassArr.length; j++) {
+            if (grassArr[j].x == grass.x && grassArr[j].y == grass.y) {
+                return true;
             }
         }
+        return false;
     }
 }
